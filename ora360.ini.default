@@ -1,0 +1,14 @@
+[db]
+host = localhost
+port = 1521
+service_name = orcl
+user = zabbix
+password = zabbix_password
+
+[mail]
+host = localhost
+port = 25
+user = john@local.domain
+password = secret
+mail_from = john@local.domain
+mail_to = recipient@local.domain, recipient2@local.domain

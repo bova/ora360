@@ -1,0 +1,7 @@
+/venv/
+/ora360.ini
+/ora360/__pycache__
+*.~sql
+/dist/
+/ora360_bova.egg-info/
+.idea
