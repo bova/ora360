@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-<title>RMAN Report</title>
+<title>ORA360° Report</title>
 {% endblock %}
 
 {% block content %}
@@ -10,7 +10,7 @@
     <h1>Отчет о статусе резервного копирования</h1>
     <p><b>Период:</b> за последние 7 дней</p>
     <br>
-    <h2>Сводная информация по всем бд</h2>
+    <h2>Сводная информация по бд</h2>
     <div class="backup_summary">
         <table class="pure-table pure-table-bordered">
             <thead>
@@ -109,5 +109,42 @@
 <div class="pure-g tabcontent" id="ASH">
     <h1>Отчет об активных сессиях </h1>
     <p><b>Период:</b> за последние 7 дней</p>
+    <div class="ash_graph">
+        <img src="data:image/svg+xml;base64, {{ ash_graph }}" alt="ASH Graph" />
+    </div>
 </div>
+<div class="pure-g tabcontent" id="Errors">
+    <h1>Список ошибок в базе данных</h1>
+    <p><b>Период:</b> за последние 7 дней</p>
+    <br>
+    <h2>Alert.log</h2>
+    <div class="ora_errors">
+        <table class="pure-table pure-table-bordered">
+            <thead>
+            <tr>
+                <td> Date </td>
+                <td> Host </td>
+                <td> Module </td>
+                <td> Message </td>
+            </tr>
+            </thead>
+            <tbody>
+            {% for r in ora_err_list %}
+                {% set tr_class = 'warning' %}
+                <tr>
+                    <td class={{ tr_class }}>{{ r.originating_timestamp}}</td>
+                    <td class={{ tr_class }}>{{ r.host_id}}</td>
+                    <td class={{ tr_class }}>{{ r.module_id }}</td>
+                    <td class={{ tr_class }}>{{ r.message_text}}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td><em>no errors found</em></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
 {% endblock %}

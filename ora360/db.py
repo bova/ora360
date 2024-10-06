@@ -151,7 +151,6 @@ class BackupDetailsSerializer:
         return self.backup_details_dict
 
 
-
 class DB:
     def __init__(self, cfg):
         self.cfg = ora360.conf.AppConf()
