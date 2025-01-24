@@ -1,4 +1,4 @@
-from ora360 import conf, db, markup, db_ash, db_err
+from ora360 import conf, db, markup, db_ash, db_err, arg
 from datetime import datetime
 import os
 
@@ -16,8 +16,18 @@ def save_report_to_file(file_name, file_content):
         f.write(file_content)
 
 
+def add_cfg_file_to_candidates(cfg_file):
+    if not cfg_file:
+        pass
+    else:
+        conf.CONF_FILE_CANDIDATES.append(cfg_file)
+
+
 if __name__ == '__main__':
+    args = arg.Arg()
     cfg = conf.AppConf()
+    add_cfg_file_to_candidates(args.cfg_file)
+    print(conf.CONF_FILE_CANDIDATES)
     cfg.parse(conf.CONF_FILE_CANDIDATES)
     bkp = db.DB(cfg)
     ash = db_ash.ASH(cfg)

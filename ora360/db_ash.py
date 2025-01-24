@@ -18,7 +18,7 @@ select Trunc(Sample_Time, 'MI') as Sample_Time,
                   'WAIT'
                end as Wait_On
           from Dba_Hist_Active_Sess_History
-         where Sample_Time > (SYSDATE - INTERVAL '7' Day) and Sample_Time < (SYSDATE - INTERVAL '1' Hour))
+         where Sample_Time > (SYSDATE - INTERVAL '14' Day) and Sample_Time < (SYSDATE - INTERVAL '1' Hour))
  group by Trunc(Sample_Time, 'MI'), Wait_On
  order by Sample_Time
 """
@@ -43,7 +43,7 @@ select Sample_Time,
                           'WAIT'
                        end as Wait_On
                   from Dba_Hist_Active_Sess_History
-                 where Sample_Time > (SYSDATE - INTERVAL '7' Day))
+                 where Sample_Time > (SYSDATE - INTERVAL '14' Day))
          group by Trunc(Sample_Time, 'HH24'), Wait_On)
 Pivot(sum(Cnt)
    for Wait_On in('CPU' Cpu, 'User I/O' User_Io, 'WAIT' Wait))
