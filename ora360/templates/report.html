@@ -8,7 +8,7 @@
 <!-- Tab content -->
 <div class="pure-g tabcontent" id="Backup">
     <h1>Отчет о статусе резервного копирования</h1>
-    <p><b>Период:</b> за последние 7 дней</p>
+    <p><b>Период:</b> за последние {{ aconf.rpt.depth }} дней</p>
     <br>
     <h2>Сводная информация по бд</h2>
     <div class="backup_summary">
@@ -108,14 +108,14 @@
 </div>
 <div class="pure-g tabcontent" id="ASH">
     <h1>Отчет об активных сессиях </h1>
-    <p><b>Период:</b> за последние 7 дней</p>
+    <p><b>Период:</b> за последние {{ aconf.rpt.depth }} дней</p>
     <div class="ash_graph">
         <img src="data:image/svg+xml;base64, {{ ash_graph }}" alt="ASH Graph" />
     </div>
 </div>
 <div class="pure-g tabcontent" id="Errors">
     <h1>Список ошибок в базе данных</h1>
-    <p><b>Период:</b> за последние 7 дней</p>
+    <p><b>Период:</b> за последние {{ aconf.rpt.depth }} дней</p>
     <br>
     <h2>Alert.log</h2>
     <div class="ora_errors">

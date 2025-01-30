@@ -1,4 +1,5 @@
 from jinja2 import Environment, PackageLoader
+from ora360.conf import aconf
 
 
 class HTML:
@@ -8,7 +9,7 @@ class HTML:
         self.template = env.get_template('report.html')
 
     def render(self, backup_summary_list, backup_detail_dict, ash_graph, ora_err_list):
-        return self.template.render(backup_summary_list=backup_summary_list, backup_detail_dict=backup_detail_dict, ash_graph=ash_graph, ora_err_list=ora_err_list)
+        return self.template.render(backup_summary_list=backup_summary_list, backup_detail_dict=backup_detail_dict, ash_graph=ash_graph, ora_err_list=ora_err_list, aconf=aconf)
 
 
 if __name__ == '__main__':

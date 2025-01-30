@@ -1,5 +1,6 @@
 import cx_Oracle
-import ora360.conf
+from ora360.conf import aconf
+
 
 BACKUP_SUMMARY_SQL = """
 select Db_Name,
@@ -44,7 +45,7 @@ select Db_Name,
                             from V$backup_Datafile_Details) Dd
             on Jd.Session_Key = Dd.Session_Key
          order by Start_Time)
- where End_Time > Trunc(SYSDATE - 7)
+ where End_Time > Trunc(SYSDATE - :depth)
  group by Db_Name
 """
 
@@ -80,7 +81,7 @@ select Db_Name,
                             from V$backup_Datafile_Details) Dd
             on Jd.Session_Key = Dd.Session_Key
          order by Start_Time)
- where End_Time > Trunc(SYSDATE - 7)
+ where End_Time > Trunc(SYSDATE - :depth)
  order by Db_Name, Start_Time"""
 
 
@@ -136,11 +137,13 @@ class BackupDetailsSerializer:
     def __init__(self, cur):
         self.cur = cur
         self.backup_details_dict = {}
+
     def get_db_names(self):
         for row in self.cur.execute(BACKUP_DETAILS_DB_NAMES_SQL):
             self.backup_details_dict[row[0]] = []
+
     def get_backup_details(self):
-        for row in self.cur.execute(BACKUP_DETAILS_SQL):
+        for row in self.cur.execute(BACKUP_DETAILS_SQL, depth=aconf.rpt.depth):
             backup_detail = BackupDetail(row)
             list_for_row = self.backup_details_dict[backup_detail.db_name]
             list_for_row.append(backup_detail)
@@ -153,17 +156,15 @@ class BackupDetailsSerializer:
 
 class DB:
     def __init__(self, cfg):
-        self.cfg = ora360.conf.AppConf()
-        self.cfg = cfg
         self.conn_url = self.get_conn_url()
         self.conn = ''
 
     def get_conn_url(self):
-        connection_url = self.cfg.db.host + ':' + self.cfg.db.port + '/' + self.cfg.db.service_name
+        connection_url = aconf.db.host + ':' + aconf.db.port + '/' + aconf.db.service_name
         return connection_url
 
     def get_connection(self):
-        self.conn = cx_Oracle.connect(self.cfg.db.user, self.cfg.db.password, self.conn_url)
+        self.conn = cx_Oracle.connect(aconf.db.user, aconf.db.password, self.conn_url)
 
     def execute_query(self):
         cur = self.conn.cursor()
@@ -174,7 +175,8 @@ class DB:
         backup_summary_list = []
         self.get_connection()
         cur = self.conn.cursor()
-        for row in cur.execute(BACKUP_SUMMARY_SQL):
+
+        for row in cur.execute(BACKUP_SUMMARY_SQL, depth=aconf.rpt.depth):
             backup_summary = BackupSummary(row)
             backup_summary_list.append(backup_summary)
         return backup_summary_list
@@ -188,8 +190,7 @@ class DB:
 
 
 if __name__ == '__main__':
-    conf = ora360.conf.AppConf()
-    conf.parse(ora360.conf.CONF_FILE_CANDIDATES)
+    conf = aconf
     conn = DB(conf)
     print(conn.get_backup_summary())
     print(conn.get_backup_details())
