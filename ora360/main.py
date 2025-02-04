@@ -1,7 +1,8 @@
 from ora360 import db, markup, db_ash, db_err, conf
 from ora360.conf import aconf
 from datetime import datetime
-import os
+import os, platform
+import oracledb
 
 
 def get_file_name_plus_tod(file_name):
@@ -17,6 +18,13 @@ def save_report_to_file(file_name, file_content):
         f.write(file_content)
 
 
+def load_oracle_lib():
+    d = None  # On Linux, no directory should be passed
+    if platform.system() == "Darwin":  # macOS
+        d = os.environ.get("HOME") + ("/Downloads/instantclient_23_3")
+    elif platform.system() == "Windows":  # Windows
+        d = aconf.db.oh
+    oracledb.init_oracle_client(lib_dir=d)
 
 
 if __name__ == '__main__':

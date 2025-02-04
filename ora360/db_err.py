@@ -1,5 +1,6 @@
-import cx_Oracle
+import oracledb
 import ora360.conf
+from ora360.conf import aconf
 
 ORA_ERR_SQL = """
 select Trunc(a.Originating_Timestamp, 'MI') as Originating_Timestamp,
@@ -37,7 +38,7 @@ class OraErr:
         return connection_url
 
     def get_connection(self):
-        self.conn = cx_Oracle.connect(self.cfg.db.user, self.cfg.db.password, self.conn_url)
+        self.conn = oracledb.connect(user=aconf.db.user, password=aconf.db.password, dsn=self.conn_url)
 
     def execute_query(self):
         cur = self.conn.cursor()

@@ -3,6 +3,7 @@
 ## Install Dependencies
   
 * pip install cx_Oracle    
+* pip install oracledb --upgrade --user (replacement of cx_Oracle)
 * pip install jinja2 
 * pip install pandas
 * pip install setuptools

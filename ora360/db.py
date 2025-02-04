@@ -1,4 +1,4 @@
-import cx_Oracle
+import oracledb
 from ora360.conf import aconf
 
 
@@ -164,7 +164,7 @@ class DB:
         return connection_url
 
     def get_connection(self):
-        self.conn = cx_Oracle.connect(aconf.db.user, aconf.db.password, self.conn_url)
+        self.conn = oracledb.connect(user=aconf.db.user, password=aconf.db.password, dsn=self.conn_url)
 
     def execute_query(self):
         cur = self.conn.cursor()

@@ -18,6 +18,7 @@ class DB:
     service_name = ''
     user = ''
     password = ''
+    oh = ''
 
 
 class RPT:
@@ -40,6 +41,7 @@ class AppConf:
         self.db.service_name = self.run_cfg.get('db', 'service_name')
         self.db.user = self.run_cfg.get('db', 'user')
         self.db.password = self.run_cfg.get('db', 'password')
+        self.db.oh = self.run_cfg.get('db', 'oh')
 
     def init_rpt_cfg(self):
         self.rpt.depth = self.arg.depth
